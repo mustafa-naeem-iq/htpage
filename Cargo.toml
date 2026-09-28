@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "crates/htpage_core",
+    "crates/htpage_cli",
+]
+resolver = "2"

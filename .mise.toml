@@ -1,0 +1,2 @@
+[tools]
+rust = { version = "latest", targets = ["wasm32-unknown-unknown"] }

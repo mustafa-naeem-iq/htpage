@@ -1,0 +1,8 @@
+[package]
+name = "htpage_cli"
+version = "0.1.0"
+edition = "2021"
+description = "CLI tool for compiling htpage documents into HTML"
+
+[dependencies]
+htpage_core = { path = "../htpage_core" }
