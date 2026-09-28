@@ -1,0 +1,11 @@
+[package]
+name = "htpage_rb"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+htpage_core = { path = "../htpage_core" }
+rb-sys = "0.9"

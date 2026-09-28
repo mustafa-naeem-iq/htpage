@@ -2,5 +2,7 @@
 members = [
     "crates/htpage_core",
     "crates/htpage_cli",
+    "crates/htpage_wasm",
+    "crates/htpage_rb",
 ]
 resolver = "2"

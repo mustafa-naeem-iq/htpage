@@ -1,0 +1,13 @@
+require "rake"
+
+desc "Build Rust native extension"
+task :compile do
+  system("cargo build --release -p htpage_rb", exception: true)
+  target_dir = File.expand_path("../../target/release", __dir__)
+  if RUBY_PLATFORM =~ /darwin/
+    cp "#{target_dir}/libhtpage_rb.dylib", "#{target_dir}/htpage_rb.bundle"
+  end
+  puts "Successfully compiled htpage_rb native extension"
+end
+
+task default: :compile
