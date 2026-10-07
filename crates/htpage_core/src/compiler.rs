@@ -1,11 +1,20 @@
 use crate::ast::{ElementNode, Node, TextNode};
+use crate::diagnostic::DiagnosticSeverity;
 use crate::lexer::Lexer;
 use crate::parser::Parser;
+use crate::span::Span;
+use crate::validator::validate;
 
 pub fn compile(source: &str) -> Result<String, String> {
     let lexer = Lexer::new(source);
     let mut parser = Parser::new(lexer);
     let mut nodes = parser.parse_program()?;
+
+    // Semantic validation pass
+    let diagnostics = validate(&nodes);
+    if let Some(err) = diagnostics.iter().find(|d| d.severity == DiagnosticSeverity::Error) {
+        return Err(err.message.clone());
+    }
 
     // Collect scoped styles for pseudo-classes (hover, focus, etc.)
     let mut scoped_css = Vec::new();
@@ -28,10 +37,10 @@ pub fn compile(source: &str) -> Result<String, String> {
                 .collect::<Vec<_>>()
                 .join("\n")
         );
-        let mut style_element = ElementNode::new("style".to_string());
+        let mut style_element = ElementNode::new("style".to_string(), Span::default(), Span::default());
         style_element
             .children
-            .push(Node::Text(TextNode::new(style_content)));
+            .push(Node::Text(TextNode::new(style_content, Span::default())));
 
         let mut target_head: Option<&mut ElementNode> = None;
         for node in &mut nodes {

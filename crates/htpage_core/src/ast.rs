@@ -1,4 +1,5 @@
 use std::collections::{BTreeMap, HashMap};
+use crate::span::Span;
 
 pub const VOID_TAGS: &[&str] = &[
     "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr",
@@ -24,7 +25,7 @@ pub const HTML_ONLY_ATTRS: &[&str] = &[
     "property", "media", "for",
 ];
 
-fn get_tag_attrs(tag: &str) -> &'static [&'static str] {
+pub fn get_tag_attrs(tag: &str) -> &'static [&'static str] {
     match tag {
         "a" => &["href", "target", "rel", "type", "download"],
         "img" => &["src", "alt", "width", "height", "loading"],
@@ -44,12 +45,43 @@ fn get_tag_attrs(tag: &str) -> &'static [&'static str] {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Attribute {
+    pub key: String,
+    pub key_span: Span,
+    pub value: String,
+    pub value_span: Span,
+    pub span: Span,
+}
+
+impl Attribute {
+    pub fn new(key: impl Into<String>, key_span: Span, value: impl Into<String>, value_span: Span) -> Self {
+        let key = key.into();
+        let value = value.into();
+        let span = Span::new(key_span.start, value_span.end);
+        Self {
+            key,
+            key_span,
+            value,
+            value_span,
+            span,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Node {
     Text(TextNode),
     Element(ElementNode),
 }
 
 impl Node {
+    pub fn span(&self) -> Span {
+        match self {
+            Node::Text(t) => t.span,
+            Node::Element(el) => el.span,
+        }
+    }
+
     pub fn to_html(&self, indent: usize, inline: bool) -> Result<String, String> {
         match self {
             Node::Text(t) => Ok(t.to_html(indent, inline)),
@@ -61,11 +93,12 @@ impl Node {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TextNode {
     pub text: String,
+    pub span: Span,
 }
 
 impl TextNode {
-    pub fn new(text: String) -> Self {
-        Self { text }
+    pub fn new(text: String, span: Span) -> Self {
+        Self { text, span }
     }
 
     pub fn to_html(&self, indent: usize, inline: bool) -> String {
@@ -80,19 +113,27 @@ impl TextNode {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ElementNode {
     pub name: String,
-    pub attrs: Vec<(String, String)>,
+    pub name_span: Span,
+    pub span: Span,
+    pub attrs: Vec<Attribute>,
     pub children: Vec<Node>,
     pub pseudo_rules: HashMap<String, Vec<(String, String)>>,
 }
 
 impl ElementNode {
-    pub fn new(name: String) -> Self {
+    pub fn new(name: String, name_span: Span, span: Span) -> Self {
         Self {
             name,
+            name_span,
+            span,
             attrs: Vec::new(),
             children: Vec::new(),
             pseudo_rules: HashMap::new(),
         }
+    }
+
+    pub fn get_attr(&self, key: &str) -> Option<&Attribute> {
+        self.attrs.iter().find(|a| a.key == key)
     }
 
     pub fn default_attr(&self) -> Option<&'static str> {
@@ -110,8 +151,13 @@ impl ElementNode {
             for child in &self.children {
                 if let Node::Text(t) = child {
                     if let Some(attr_name) = self.default_attr() {
-                        if !self.attrs.iter().any(|(k, _)| k == attr_name) {
-                            self.attrs.push((attr_name.to_string(), t.text.clone()));
+                        if !self.attrs.iter().any(|a| a.key == attr_name) {
+                            self.attrs.push(Attribute::new(
+                                attr_name,
+                                Span::default(),
+                                t.text.clone(),
+                                t.span,
+                            ));
                         }
                     }
                 }
@@ -141,11 +187,16 @@ impl ElementNode {
             *counter += 1;
             let cls = format!("ht-{}", counter);
 
-            if let Some((_, existing_class)) = self.attrs.iter_mut().find(|(k, _)| k == "class") {
-                existing_class.push(' ');
-                existing_class.push_str(&cls);
+            if let Some(existing_class) = self.attrs.iter_mut().find(|a| a.key == "class") {
+                existing_class.value.push(' ');
+                existing_class.value.push_str(&cls);
             } else {
-                self.attrs.push(("class".to_string(), cls.clone()));
+                self.attrs.push(Attribute::new(
+                    "class",
+                    Span::default(),
+                    cls.clone(),
+                    Span::default(),
+                ));
             }
 
             // Sort pseudo-class keys for deterministic output
@@ -204,7 +255,9 @@ impl ElementNode {
             attrs
         };
 
-        for (k, v) in &self.attrs {
+        for attr in &self.attrs {
+            let k = &attr.key;
+            let v = &attr.value;
             let is_html = GLOBAL_ATTRS.contains(&k.as_str())
                 || allowed_tag_attrs.contains(&k.as_str())
                 || k.starts_with("on")

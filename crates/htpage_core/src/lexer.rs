@@ -1,3 +1,4 @@
+use crate::span::Span;
 use crate::token::{Token, TokenType};
 
 pub struct Lexer {
@@ -21,7 +22,7 @@ impl Lexer {
         self.skip_whitespace();
 
         if self.pos >= self.chars.len() {
-            return Token::new(TokenType::Eof, self.pos);
+            return Token::new(TokenType::Eof, Span::new(self.pos, self.pos));
         }
 
         let ch = self.chars[self.pos];
@@ -34,31 +35,31 @@ impl Lexer {
             }
             '{' => {
                 self.pos += 1;
-                Token::new(TokenType::LBrace, start_pos)
+                Token::new(TokenType::LBrace, Span::new(start_pos, self.pos))
             }
             '}' => {
                 self.pos += 1;
-                Token::new(TokenType::RBrace, start_pos)
+                Token::new(TokenType::RBrace, Span::new(start_pos, self.pos))
             }
             '[' => {
                 self.pos += 1;
-                Token::new(TokenType::LBracket, start_pos)
+                Token::new(TokenType::LBracket, Span::new(start_pos, self.pos))
             }
             ']' => {
                 self.pos += 1;
-                Token::new(TokenType::RBracket, start_pos)
+                Token::new(TokenType::RBracket, Span::new(start_pos, self.pos))
             }
             '(' => {
                 self.pos += 1;
-                Token::new(TokenType::LParen, start_pos)
+                Token::new(TokenType::LParen, Span::new(start_pos, self.pos))
             }
             ')' => {
                 self.pos += 1;
-                Token::new(TokenType::RParen, start_pos)
+                Token::new(TokenType::RParen, Span::new(start_pos, self.pos))
             }
             '=' => {
                 self.pos += 1;
-                Token::new(TokenType::Assign, start_pos)
+                Token::new(TokenType::Assign, Span::new(start_pos, self.pos))
             }
             ':' => {
                 if self.pos + 2 < self.chars.len()
@@ -68,26 +69,26 @@ impl Lexer {
                     self.read_word()
                 } else {
                     self.pos += 1;
-                    Token::new(TokenType::Colon, start_pos)
+                    Token::new(TokenType::Colon, Span::new(start_pos, self.pos))
                 }
             }
             ',' => {
                 self.pos += 1;
-                Token::new(TokenType::Comma, start_pos)
+                Token::new(TokenType::Comma, Span::new(start_pos, self.pos))
             }
             ';' => {
                 self.pos += 1;
-                Token::new(TokenType::Sep(";".to_string()), start_pos)
+                Token::new(TokenType::Sep(";".to_string()), Span::new(start_pos, self.pos))
             }
             '\n' => {
                 self.pos += 1;
-                Token::new(TokenType::Sep("\n".to_string()), start_pos)
+                Token::new(TokenType::Sep("\n".to_string()), Span::new(start_pos, self.pos))
             }
             _ => self.read_word(),
         }
     }
 
-    pub fn read_raw_until_matching_brace(&mut self, start_pos: usize) -> String {
+    pub fn read_raw_until_matching_brace(&mut self, start_pos: usize) -> (String, usize) {
         self.pos = start_pos;
         let mut brace_count = 1;
         while self.pos < self.chars.len() {
@@ -104,8 +105,9 @@ impl Lexer {
         }
 
         let val: String = self.chars[start_pos..self.pos].iter().collect();
+        let end_brace_pos = self.pos;
         self.pos += 1; // consume '}'
-        val
+        (val, end_brace_pos + 1)
     }
 
     fn skip_whitespace(&mut self) {
@@ -163,6 +165,6 @@ impl Lexer {
             self.pos += 1;
         }
 
-        Token::new(TokenType::Word(word_str), start)
+        Token::new(TokenType::Word(word_str), Span::new(start, self.pos))
     }
 }
