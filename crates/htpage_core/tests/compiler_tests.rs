@@ -63,3 +63,14 @@ fn test_html_only_attribute_validation() {
     assert!(result.is_err());
     assert!(result.unwrap_err().contains("Attribute 'href' is not valid for tag '<img>'!"));
 }
+
+#[test]
+fn test_nested_block_comma_lookahead() {
+    let input = "button { Click, hover { color: blue, font-weight: 600 } }\n";
+    let output = compile(input).unwrap();
+    assert!(output.contains("<style>"));
+    assert!(output.contains(".ht-1:hover { color: blue; font-weight: 600; }"));
+    assert!(output.contains("<button class=\"ht-1\">Click</button>"));
+    assert!(!output.contains("Click,"));
+}
+

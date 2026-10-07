@@ -128,10 +128,10 @@ impl LanguageServer for Backend {
         };
 
         let output = parse_with_diagnostics(text);
-        let offset = match output.line_index.offset(pos.line as usize, pos.character as usize) {
-            Some(o) => o,
-            None => 0,
-        };
+        let _offset = output
+            .line_index
+            .offset(pos.line as usize, pos.character as usize)
+            .unwrap_or_default();
 
         let mut items = Vec::new();
 
@@ -356,6 +356,6 @@ async fn main() {
     let stdin = tokio::io::stdin();
     let stdout = tokio::io::stdout();
 
-    let (service, socket) = LspService::new(|client| Backend::new(client));
+    let (service, socket) = LspService::new(Backend::new);
     Server::new(stdin, stdout, socket).serve(service).await;
 }

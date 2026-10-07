@@ -326,15 +326,11 @@ impl ElementNode {
                 if idx > 0 {
                     let prev = &self.children[idx - 1];
                     match (prev, c) {
-                        (Node::Element(_), Node::Text(_)) => {
-                            if !res.starts_with([',', '.', '!', '?', ';', ':']) {
-                                b.push(' ');
-                            }
+                        (Node::Element(_), Node::Text(_)) if !res.starts_with([',', '.', '!', '?', ';', ':']) => {
+                            b.push(' ');
                         }
-                        (Node::Text(t), Node::Element(_)) => {
-                            if !t.text.ends_with(' ') {
-                                b.push(' ');
-                            }
+                        (Node::Text(t), Node::Element(_)) if !t.text.ends_with(' ') => {
+                            b.push(' ');
                         }
                         _ => {}
                     }

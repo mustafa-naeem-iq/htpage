@@ -24,6 +24,12 @@ unsafe extern "C" fn rb_htpage_compile(_klass: VALUE, rb_source: VALUE) -> VALUE
     }
 }
 
+/// Initializes the `Htpage` Ruby module and binds `Htpage.compile`.
+///
+/// # Safety
+///
+/// This function is invoked by the Ruby MRI runtime during gem extension initialization.
+/// It interacts directly with Ruby C-API functions (`rb_define_module`, `rb_define_singleton_method`).
 #[no_mangle]
 pub unsafe extern "C" fn Init_htpage_rb() {
     let name = CString::new("Htpage").unwrap();

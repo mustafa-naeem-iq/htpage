@@ -156,8 +156,8 @@ impl Parser {
             return false;
         }
         let peek_is_word = matches!(&self.peek, Some(t) if matches!(t.token_type, TokenType::Word(_)));
-        let peek2_is_colon = matches!(&self.peek2, Some(t) if matches!(t.token_type, TokenType::Colon));
-        peek_is_word && peek2_is_colon
+        let peek2_is_delimiter = matches!(&self.peek2, Some(t) if matches!(t.token_type, TokenType::Colon | TokenType::LBrace));
+        peek_is_word && peek2_is_delimiter
     }
 
     fn parse_mixed(&mut self, parent_tag: Option<&mut ElementNode>) -> Result<MixedResult, String> {
@@ -417,34 +417,35 @@ impl Parser {
             let (name, name_span) = words.pop().unwrap_or_else(|| (String::new(), Span::default()));
 
             // Nested pseudo-class block: hover { color: blue }
-            if PSEUDO_CLASSES.contains(&name.as_str()) && parent_tag.is_some() {
-                let brace_pos = self.curr.as_ref().map(|t| t.span.start).unwrap_or(0);
-                let mut pseudo_node = ElementNode::new(name.clone(), name_span, Span::new(name_span.start, brace_pos));
-                self.match_token(|t| matches!(t, TokenType::LBrace));
-                self.parse_block(&mut pseudo_node)?;
+            if PSEUDO_CLASSES.contains(&name.as_str()) {
+                if let Some(parent) = parent_tag {
+                    let brace_pos = self.curr.as_ref().map(|t| t.span.start).unwrap_or(0);
+                    let mut pseudo_node = ElementNode::new(name.clone(), name_span, Span::new(name_span.start, brace_pos));
+                    self.match_token(|t| matches!(t, TokenType::LBrace));
+                    self.parse_block(&mut pseudo_node)?;
 
-                let parent = parent_tag.unwrap();
-                let rules = parent.pseudo_rules.entry(name).or_default();
-                for attr in pseudo_node.attrs {
-                    if let Some(existing) = rules.iter_mut().find(|(ek, _)| ek == &attr.key) {
-                        existing.1 = attr.value;
-                    } else {
-                        rules.push((attr.key, attr.value));
+                    let rules = parent.pseudo_rules.entry(name).or_default();
+                    for attr in pseudo_node.attrs {
+                        if let Some(existing) = rules.iter_mut().find(|(ek, _)| ek == &attr.key) {
+                            existing.1 = attr.value;
+                        } else {
+                            rules.push((attr.key, attr.value));
+                        }
                     }
-                }
 
-                let text_before = if !words.is_empty() {
-                    let text = words.iter().map(|(w, _)| w.as_str()).collect::<Vec<_>>().join(" ");
-                    let text_span = Span::new(words[0].1.start, words.last().unwrap().1.end);
-                    Some(TextNode::new(text, text_span))
-                } else {
-                    None
-                };
-                return Ok(MixedResult {
-                    text_before,
-                    node: None,
-                    attr: None,
-                });
+                    let text_before = if !words.is_empty() {
+                        let text = words.iter().map(|(w, _)| w.as_str()).collect::<Vec<_>>().join(" ");
+                        let text_span = Span::new(words[0].1.start, words.last().unwrap().1.end);
+                        Some(TextNode::new(text, text_span))
+                    } else {
+                        None
+                    };
+                    return Ok(MixedResult {
+                        text_before,
+                        node: None,
+                        attr: None,
+                    });
+                }
             }
 
             let brace_pos = self.curr.as_ref().map(|t| t.span.start).unwrap_or(0);
