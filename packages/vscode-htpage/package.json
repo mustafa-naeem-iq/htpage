@@ -1,0 +1,57 @@
+{
+  "name": "vscode-htpage",
+  "displayName": "htpage",
+  "description": "Language support, syntax highlighting, and LSP integration for htpage",
+  "version": "0.1.0",
+  "publisher": "htpage",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:htpage"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "htpage",
+        "aliases": ["htpage", "HyperText Page"],
+        "extensions": [".htpage"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "htpage",
+        "scopeName": "source.htpage",
+        "path": "./syntaxes/htpage.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "htpage",
+      "properties": {
+        "htpage.lsp.serverPath": {
+          "type": "string",
+          "default": "",
+          "description": "Custom path to htpage_lsp binary"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.0"
+  }
+}

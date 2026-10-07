@@ -1,0 +1,128 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "htpage",
+  "scopeName": "source.htpage",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#raw-blocks" },
+    { "include": "#void-tags" },
+    { "include": "#pseudo-classes" },
+    { "include": "#elements" },
+    { "include": "#attributes" },
+    { "include": "#strings" },
+    { "include": "#constants" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.htpage",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "raw-blocks": {
+      "patterns": [
+        {
+          "begin": "\\b(css|style)\\s*\\{",
+          "beginCaptures": {
+            "1": { "name": "entity.name.tag.htpage" }
+          },
+          "end": "\\}",
+          "patterns": [
+            { "include": "source.css" }
+          ]
+        },
+        {
+          "begin": "\\b(javascript|script)\\s*\\{",
+          "beginCaptures": {
+            "1": { "name": "entity.name.tag.htpage" }
+          },
+          "end": "\\}",
+          "patterns": [
+            { "include": "source.js" }
+          ]
+        }
+      ]
+    },
+    "void-tags": {
+      "patterns": [
+        {
+          "match": "\\{([a-zA-Z0-9_-]+)\\}",
+          "captures": {
+            "1": { "name": "entity.name.tag.void.htpage" }
+          }
+        },
+        {
+          "match": "\\[([a-zA-Z0-9_-]+)\\]",
+          "captures": {
+            "1": { "name": "entity.name.tag.void.htpage" }
+          }
+        }
+      ]
+    },
+    "pseudo-classes": {
+      "patterns": [
+        {
+          "match": "\\b(hover|focus|active|visited|before|after|first-child|last-child|nth-child|disabled|checked)\\s*:",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.pseudo-class.htpage" }
+          }
+        },
+        {
+          "match": "\\b(hover|focus|active|visited|before|after|first-child|last-child|nth-child|disabled|checked)\\s*\\{",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.pseudo-class.htpage" }
+          }
+        }
+      ]
+    },
+    "elements": {
+      "patterns": [
+        {
+          "match": "\\b([a-zA-Z0-9_-]+)\\s*\\{",
+          "captures": {
+            "1": { "name": "entity.name.tag.htpage" }
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "match": "\\b([a-zA-Z0-9_-]+)\\s*:",
+          "captures": {
+            "1": { "name": "entity.other.attribute-name.htpage" }
+          }
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.other.parenthesis.htpage",
+          "begin": "\\(",
+          "end": "\\)",
+          "patterns": [
+            {
+              "name": "constant.character.escape.htpage",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "constant.character.escape.htpage",
+          "match": "\\\\[{}\\[\\]():,;#\\\\]"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.boolean.htpage",
+          "match": "\\b(true|false)\\b"
+        }
+      ]
+    }
+  }
+}
