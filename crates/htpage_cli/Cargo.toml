@@ -4,5 +4,9 @@ version = "0.1.0"
 edition = "2021"
 description = "CLI tool for compiling htpage documents into HTML"
 
+[[bin]]
+name = "htpage"
+path = "src/main.rs"
+
 [dependencies]
 htpage_core = { path = "../htpage_core" }
