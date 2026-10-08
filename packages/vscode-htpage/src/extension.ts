@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as fs from 'fs';
+import * as os from 'os';
 import { workspace, ExtensionContext } from 'vscode';
 import {
   LanguageClient,
@@ -16,6 +17,7 @@ export function activate(context: ExtensionContext) {
   let serverCommand = customPath;
   if (!serverCommand || serverCommand.trim() === '') {
     const candidatePaths = [
+      path.join(os.homedir(), '.cargo/bin/htpage_lsp'),
       path.join(context.extensionPath, '../../target/release/htpage_lsp'),
       path.join(context.extensionPath, '../../target/debug/htpage_lsp'),
       'htpage_lsp',
