@@ -19,9 +19,40 @@
 
 ---
 
+<table align="center" border="0">
+  <tr>
+    <td align="center" width="25%">
+      <a href="#1-command-line--language-server-homebrew-tap">
+        <img src="assets/icons/brew.png" height="70" alt="Homebrew"><br>
+        <strong>Homebrew</strong>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="#2-visual-studio-code-extension-vs-code-marketplace">
+        <img src="assets/icons/vscode.png" height="70" alt="VS Code"><br>
+        <strong>VS Code</strong>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="#3-vite-frontend-plugin-npm">
+        <img src="assets/icons/vite.png" height="70" alt="Vite"><br>
+        <strong>Vite</strong>
+      </a>
+    </td>
+    <td align="center" width="25%">
+      <a href="#4-ruby-on-rails-template-handler-rubygems">
+        <img src="assets/icons/ruby.png" height="70" alt="Rails Gem"><br>
+        <strong>Rails Gem</strong>
+      </a>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 4 Official Distribution Channels
 
-### 1. Command Line & Language Server ([Homebrew Tap](https://github.com/mustafa-naeem-iq/homebrew-htpage))
+### <img src="assets/icons/brew.png" height="24" valign="middle" /> 1. Command Line & Language Server ([Homebrew Tap](https://github.com/mustafa-naeem-iq/homebrew-htpage))
 
 Install both the standalone compiler CLI (`htpage`) and the Language Server Protocol (`htpage_lsp`) in one step:
 
@@ -40,7 +71,7 @@ htpage index.htpage index.html
 
 ---
 
-### 2. Visual Studio Code Extension ([VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mustafa-naeem.vscode-htpage))
+### <img src="assets/icons/vscode.png" height="24" valign="middle" /> 2. Visual Studio Code Extension ([VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mustafa-naeem.vscode-htpage))
 
 First-class language support for VS Code including syntax highlighting, embedded CSS/JS, real-time diagnostics, and context-aware auto-completion:
 
@@ -54,7 +85,7 @@ First-class language support for VS Code including syntax highlighting, embedded
 
 ---
 
-### 3. Vite Frontend Plugin ([npm](https://www.npmjs.com/package/vite-plugin-htpage))
+### <img src="assets/icons/vite.png" height="24" valign="middle" /> 3. Vite Frontend Plugin ([npm](https://www.npmjs.com/package/vite-plugin-htpage))
 
 Zero-runtime, in-process compilation of `.htpage` templates in Vite projects using an embedded WebAssembly core:
 
@@ -83,7 +114,7 @@ document.querySelector('#app')!.innerHTML = cardHtml;
 
 ---
 
-### 4. Ruby on Rails Template Handler ([RubyGems](https://rubygems.org/gems/htpage))
+### <img src="assets/icons/ruby.png" height="24" valign="middle" /> 4. Ruby on Rails Template Handler ([RubyGems](https://rubygems.org/gems/htpage))
 
 Blazing fast, zero-IPC native C-extension (`rb-sys`) registering `.html.htpage` templates in Rails `ActionView`:
 
