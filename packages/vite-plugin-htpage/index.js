@@ -1,8 +1,12 @@
 let compile;
 try {
-  compile = require('htpage_wasm').compile;
+  compile = require('./wasm/htpage_wasm.js').compile;
 } catch {
-  compile = require('../../crates/htpage_wasm/pkg/htpage_wasm.js').compile;
+  try {
+    compile = require('htpage_wasm').compile;
+  } catch {
+    compile = require('../../crates/htpage_wasm/pkg/htpage_wasm.js').compile;
+  }
 }
 
 function htpage() {

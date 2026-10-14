@@ -17,6 +17,8 @@ export function activate(context: ExtensionContext) {
   let serverCommand = customPath;
   if (!serverCommand || serverCommand.trim() === '') {
     const candidatePaths = [
+      '/opt/homebrew/bin/htpage_lsp',
+      '/usr/local/bin/htpage_lsp',
       path.join(os.homedir(), '.cargo/bin/htpage_lsp'),
       path.join(context.extensionPath, '../../target/release/htpage_lsp'),
       path.join(context.extensionPath, '../../target/debug/htpage_lsp'),

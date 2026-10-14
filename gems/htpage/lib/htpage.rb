@@ -3,12 +3,16 @@
 require_relative "htpage/version"
 
 begin
-  require_relative "../../../target/debug/htpage_rb"
+  require_relative "htpage_rb"
 rescue LoadError
   begin
-    require_relative "../../../target/release/htpage_rb"
-  rescue LoadError
     require "htpage_rb"
+  rescue LoadError
+    begin
+      require_relative "../../../target/release/htpage_rb"
+    rescue LoadError
+      require_relative "../../../target/debug/htpage_rb"
+    end
   end
 end
 

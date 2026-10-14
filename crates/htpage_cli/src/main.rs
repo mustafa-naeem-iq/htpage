@@ -4,9 +4,19 @@ use std::process;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() < 2 {
-        eprintln!("Usage: htpage <file.htpage> [output.html]");
-        process::exit(1);
+    if args.len() < 2 || args[1] == "--help" || args[1] == "-h" {
+        println!("htpage {}", env!("CARGO_PKG_VERSION"));
+        println!("High-performance markup language compiler powered by a pure Rust core\n");
+        println!("USAGE:");
+        println!("    htpage <file.htpage> [output.html]");
+        println!("    htpage --version | -v");
+        println!("    htpage --help | -h");
+        process::exit(if args.len() < 2 { 1 } else { 0 });
+    }
+
+    if args[1] == "--version" || args[1] == "-v" {
+        println!("htpage {}", env!("CARGO_PKG_VERSION"));
+        process::exit(0);
     }
 
     let input_file = &args[1];

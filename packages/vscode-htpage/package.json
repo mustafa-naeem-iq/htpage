@@ -4,6 +4,15 @@
   "description": "Language support, syntax highlighting, and LSP integration for htpage",
   "version": "0.1.0",
   "publisher": "htpage",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mustafa-naeem-iq/htpage"
+  },
+  "bugs": {
+    "url": "https://github.com/mustafa-naeem-iq/htpage/issues"
+  },
+  "homepage": "https://github.com/mustafa-naeem-iq/htpage#readme",
   "engines": {
     "vscode": "^1.80.0"
   },
