@@ -1,14 +1,27 @@
-# htpage
+<p align="center">
+  <img src="assets/HTLogo.png" alt="htpage banner" width="700" />
+</p>
 
-A high-performance, unified markup language and multi-target compiler suite designed to eliminate HTML and CSS boilerplate through radical brevity and clean syntax.
+<h1 align="center">htpage</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <strong>A high-performance, unified markup language and multi-target compiler suite.</strong><br>
+  Radical brevity, clean syntax, and zero-boilerplate HTML + CSS.
+</p>
+
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=mustafa-naeem.vscode-htpage"><img src="https://img.shields.io/visual-studio-marketplace/v/mustafa-naeem.vscode-htpage?color=007ACC&label=VS%20Code" alt="VS Code Marketplace"></a>
+  <a href="https://rubygems.org/gems/htpage"><img src="https://img.shields.io/gem/v/htpage?color=E9573F&label=RubyGems" alt="RubyGems"></a>
+  <a href="https://www.npmjs.com/package/vite-plugin-htpage"><img src="https://img.shields.io/npm/v/vite-plugin-htpage?color=CB3837&label=npm" alt="npm"></a>
+  <a href="https://github.com/mustafa-naeem-iq/homebrew-htpage"><img src="https://img.shields.io/badge/Homebrew-Tap-FBB040?logo=homebrew&logoColor=black" alt="Homebrew Tap"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
+</p>
 
 ---
 
-## Quick Start: 4 Ways to Use htpage
+## 4 Official Distribution Channels
 
-### 1. Command Line & Language Server (Homebrew)
+### 1. Command Line & Language Server ([Homebrew Tap](https://github.com/mustafa-naeem-iq/homebrew-htpage))
 
 Install both the standalone compiler CLI (`htpage`) and the Language Server Protocol (`htpage_lsp`) in one step:
 
@@ -27,11 +40,11 @@ htpage index.htpage index.html
 
 ---
 
-### 2. Visual Studio Code Extension
+### 2. Visual Studio Code Extension ([VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=mustafa-naeem.vscode-htpage))
 
 First-class language support for VS Code including syntax highlighting, embedded CSS/JS, real-time diagnostics, and context-aware auto-completion:
 
-- Search for **`htpage`** in the Visual Studio Code Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`).
+- Install via the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=mustafa-naeem.vscode-htpage) by searching **`htpage`** in the Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`).
 - Or install via CLI:
   ```bash
   code --install-extension mustafa-naeem.vscode-htpage
@@ -41,7 +54,7 @@ First-class language support for VS Code including syntax highlighting, embedded
 
 ---
 
-### 3. Vite Frontend Plugin (npm)
+### 3. Vite Frontend Plugin ([npm](https://www.npmjs.com/package/vite-plugin-htpage))
 
 Zero-runtime, in-process compilation of `.htpage` templates in Vite projects using an embedded WebAssembly core:
 
@@ -70,7 +83,7 @@ document.querySelector('#app')!.innerHTML = cardHtml;
 
 ---
 
-### 4. Ruby on Rails Template Handler (RubyGems)
+### 4. Ruby on Rails Template Handler ([RubyGems](https://rubygems.org/gems/htpage))
 
 Blazing fast, zero-IPC native C-extension (`rb-sys`) registering `.html.htpage` templates in Rails `ActionView`:
 
