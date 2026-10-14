@@ -17,6 +17,8 @@ brew tap mustafa-naeem-iq/htpage
 brew install htpage
 ```
 
+> **Note**: Homebrew 4.2+ displays a one-time prompt to trust third-party taps. In headless CI/CD pipelines, pre-trust the tap by running `brew trust --tap mustafa-naeem-iq/htpage` before installation.
+
 Compile any `.htpage` document to standards-compliant HTML:
 
 ```bash
