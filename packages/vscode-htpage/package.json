@@ -3,7 +3,7 @@
   "displayName": "htpage",
   "description": "Language support, syntax highlighting, and LSP integration for htpage",
   "version": "0.1.0",
-  "publisher": "htpage",
+  "publisher": "mustafa-naeem",
   "license": "MIT",
   "repository": {
     "type": "git",

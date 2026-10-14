@@ -34,7 +34,7 @@ First-class language support for VS Code including syntax highlighting, embedded
 - Search for **`htpage`** in the Visual Studio Code Extensions view (`Ctrl+Shift+X` / `Cmd+Shift+X`).
 - Or install via CLI:
   ```bash
-  code --install-extension htpage.vscode-htpage
+  code --install-extension mustafa-naeem.vscode-htpage
   ```
 
 *The extension automatically discovers `htpage_lsp` installed via Homebrew at `/opt/homebrew/bin/htpage_lsp`.*
